@@ -1,3 +1,6 @@
+# PDF documents
+references/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +130,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS Code miscellaneous
+workspace.code-workspace
