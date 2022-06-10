@@ -1,2 +1,3 @@
-# stylta - Stata code style checker
-stylta is a tool to check your Stata code against some style conventions
+# Stylta - Stata code style checker
+
+Stylta is a tool to check your Stata code against some style conventions

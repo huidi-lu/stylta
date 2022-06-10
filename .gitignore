@@ -1,6 +1,12 @@
 # PDF documents
 references/
 
+# Directory for uploads
+uploads/
+
+# Flask session
+flask_session/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -133,3 +139,6 @@ dmypy.json
 
 # VS Code miscellaneous
 workspace.code-workspace
+
+# Bootstrap Studio
+*.bsdesign
