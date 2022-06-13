@@ -1,7 +1,10 @@
 import os
-from flask import Flask, flash, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, flash, request, redirect, render_template
 from flask_session import Session
-from werkzeug.utils import secure_filename
+import uuid
+
+from checker import Checker
+
 
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'txt', 'do', 'ado'}
@@ -11,9 +14,6 @@ app = Flask(__name__)
 # Limit the maximum allowed payload to one megabyte
 app.config['MAX_CONTENT_LENGTH'] = 1e6
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.add_url_rule(
-    "/uploads/<name>", endpoint="uploads", build_only=True
-)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -28,13 +28,14 @@ def filetype_is_allowed(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/uploads/<name>')
-def serve_file(name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
-
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@app.errorhandler(404)
+def on_not_found_error(e):
+    flash(e)
+    return redirect("/")
 
 @app.route('/upload_and_check', methods=['POST'])
 def main():
@@ -47,13 +48,28 @@ def main():
         return redirect('/')
 
     if not filetype_is_allowed(file.filename):
-        flash('Invalid file!')
+        flash('Accepting .do files only!')
         return redirect('/')
 
-    filename = secure_filename(file.filename)
+    filename = uuid.uuid4().hex
     file.save(os.path.join(UPLOAD_FOLDER, filename))
-    return redirect(url_for('uploads', name=filename))
+    return redirect(f'/result/{filename}', code=303)
+
+@app.route('/result/<filename>')
+def show_result(filename=None):
+    path2file = os.path.join(UPLOAD_FOLDER, filename)
+    if filename and os.path.exists(path2file):
+        with open(path2file) as codefile:
+            try:
+                codelines = codefile.read().splitlines()
+            except Exception:
+                codelines = ["",]
+        os.remove(path2file)
+        return render_template("result.html", codelines = codelines)
+    else:
+        flash('Result has been deleted or does not exist.')
+        return redirect('/', code=307)
 
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#     app.run()

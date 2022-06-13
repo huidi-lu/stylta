@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block main %}
+        <div class="container text-center mb-5" style="width:50%;">
+            <pre class="shadow-sm rounded language-stata" style="line-height:0; user-select:none;">
+{% for line in codelines %}
+<code>{{ line }}</code>
+{% endfor %}
+            </pre>
+        </div>
+{% endblock %}
