@@ -52,6 +52,8 @@ def main():
         return redirect('/')
 
     filename = uuid.uuid4().hex
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.mkdir(UPLOAD_FOLDER)
     file.save(os.path.join(UPLOAD_FOLDER, filename))
     return redirect(f'/result/{filename}', code=303)
 
