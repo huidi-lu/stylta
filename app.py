@@ -3,7 +3,7 @@ from flask import Flask, flash, request, redirect, render_template
 from flask_session import Session
 import uuid
 
-from checker import Checker
+from checker import Checker, is_comment, is_empty
 
 
 UPLOAD_FOLDER = './uploads'
@@ -65,7 +65,17 @@ def show_result(filename=None):
             except Exception:
                 codelines = ["",]
         os.remove(path2file)
-        return render_template("result.html", codelines = codelines)
+
+        nonempty_lines = [line for line in codelines if not is_empty(line)]
+
+        comment_lines = [line for line in nonempty_lines if is_comment(line)]
+        n_comment_lines = len(comment_lines)
+        n_command_lines = len(nonempty_lines) - n_comment_lines
+
+        return render_template("result.html",
+                               n_command_lines = n_command_lines,
+                               n_comment_lines = n_comment_lines,
+                               codelines = codelines)
     else:
         flash('Result has been deleted or does not exist.')
         return redirect('/', code=307)

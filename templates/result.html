@@ -1,7 +1,22 @@
 {% extends "layout.html" %}
 
 {% block main %}
-        <div class="container text-center mb-5" style="width:50%;">
+        <div class="container mb-5" style="width:50%;">
+            <ul class="list-group" style="width:50%;">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Number of command lines
+                    <span class="badge bg-primary rounded-pill" style="font-size:1em;">{{ n_command_lines }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Number of comment lines
+                    <span class="badge bg-primary rounded-pill" style="font-size:1em;">{{ n_comment_lines }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Total lines of code (excluding whitespace)
+                    <span class="badge bg-primary rounded-pill" style="font-size:1em;">{{ n_command_lines + n_comment_lines }}</span>
+                </li>
+            </ul>
+
             <pre class="shadow-sm rounded language-stata" style="line-height:0; user-select:none;">
 {% for line in codelines %}
 <code>{{ line }}</code>

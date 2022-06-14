@@ -1,3 +1,17 @@
+def is_comment(physical_line: str) -> bool:
+    line = physical_line.lstrip()
+    if line.startswith("*") or line.startswith("//"):
+        return True
+    else:
+        return False
+
+def is_empty(physical_line: str) -> bool:
+    line = physical_line.strip(" */")
+    if len(line) == 0:
+        return True
+    else:
+        return False
+
 class Checker:
     
     def backward_slash(physical_line):
