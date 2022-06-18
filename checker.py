@@ -12,6 +12,7 @@ def is_empty(physical_line: str) -> bool:
     else:
         return False
 
+
 class Checker:
     
     def backward_slash(physical_line):
@@ -24,7 +25,6 @@ class Checker:
             return msg
         else:
             return None
-
 
     def maximum_line_length(physical_line):
         r"""Limit all lines to a maximum of 79 characters."""
