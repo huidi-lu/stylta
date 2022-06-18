@@ -1,1 +1,1 @@
-web: waitress-serve --listen "*:$PORT" app:app
+web: waitress-serve --max-request-body-size=10485760 --listen "*:$PORT" app:app
